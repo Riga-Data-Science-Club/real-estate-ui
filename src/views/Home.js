@@ -13,6 +13,7 @@ import FormatLineSpacingIcon from '@material-ui/icons/FormatLineSpacing';
 import EuroSharpIcon from '@material-ui/icons/EuroSharp';
 import {RealEstateFormControl} from "../components/RealEstateFormControl";
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import RigaRealEstateMap from "../components/RigaRealEstateMap";
 
 const useStyles = makeStyles(() => ({
@@ -104,7 +105,7 @@ export default function Home() {
         if(allFieldsAreComplete()) {
             setLoading(true);
             setPredictions(null);
-            fetch("http://35.189.254.202:8501/v1/models/riga:predict", {
+            fetch("https://api.rigadsclub.com/v1/models/riga:predict", {
                     method: "POST",
                     body: JSON.stringify({
                         instances: [
@@ -129,86 +130,86 @@ export default function Home() {
 
     return (
         <div className={classes.root}>
-            <div className={classes.header}>
+            <RigaRealEstateMap map={map} setMap={setMap} location={location} setLocation={setLocation} />
+            <Container>
                 <Typography variant="subtitle1" gutterBottom>
                     Complete few fields below to get rent and sale price estimation for any property located in Riga, Latvia:
                 </Typography>
-            </div>
-            <RigaRealEstateMap map={map} setMap={setMap} location={location} setLocation={setLocation} />
-            <Grid container spacing={1}>
-                <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
-                    <Step icon={<LocationOnIcon/>} title={'Real estate location'} complete={location}>
-                        <EnterLocation map={map} location={location} setLocation={setLocation} />
-                    </Step>
-                </Grid>
-                <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
-                    {place && <Step icon={<HomeIcon/>} title={"House properties"} complete={houseSeria && houseType && totalFloors}>
-                        <HouseSeriesSelect value={houseSeria} onChange={event => setHouseSeria(event.target.value)} />
-                        <HouseTypeSelect value={houseType} onChange={event => setHouseType(event.target.value)} />
-                        <RealEstateFormControl>
-                            <TextField
-                                className={classes.textField}
-                                label="Floor count"
-                                type="number"
-                                variant="outlined"
-                                value={totalFloors.toString()}
-                                onChange={event => setTotalFloors(parseInt(event.target.value))}
-                            />
-                        </RealEstateFormControl>
-                    </Step>}
-                </Grid>
+                <Grid container spacing={1}>
+                    <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
+                        <Step icon={<LocationOnIcon/>} title={'Real estate location'} complete={location}>
+                            <EnterLocation map={map} location={location} setLocation={setLocation} />
+                        </Step>
+                    </Grid>
+                    <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
+                        {place && <Step icon={<HomeIcon/>} title={"House properties"} complete={houseSeria && houseType && totalFloors}>
+                            <HouseSeriesSelect value={houseSeria} onChange={event => setHouseSeria(event.target.value)} />
+                            <HouseTypeSelect value={houseType} onChange={event => setHouseType(event.target.value)} />
+                            <RealEstateFormControl>
+                                <TextField
+                                    className={classes.textField}
+                                    label="Floor count"
+                                    type="number"
+                                    variant="outlined"
+                                    value={totalFloors.toString()}
+                                    onChange={event => setTotalFloors(parseInt(event.target.value))}
+                                />
+                            </RealEstateFormControl>
+                        </Step>}
+                    </Grid>
 
-                <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
-                    {place && <Step icon={<FormatLineSpacingIcon />} title={"Flat properties"} complete={floor && area && rooms}>
-                        <RealEstateFormControl variant='outlined'>
-                            <TextField
-                                className={classes.textField}
-                                label="Floor"
-                                type="number"
-                                variant="outlined"
-                                value={floor.toString()}
-                                onChange={event => setFloor(parseInt(event.target.value))}
-                            />
-                        </RealEstateFormControl>
-                        <RealEstateFormControl variant='outlined'>
-                            <TextField
-                                className={classes.textField}
-                                label="Area"
-                                type="number"
-                                variant="outlined"
-                                value={area.toString()}
-                                onChange={event => setArea(parseInt(event.target.value))}
-                            />
-                        </RealEstateFormControl>
-                        <RealEstateFormControl variant='outlined'>
-                            <TextField
-                                className={classes.textField}
-                                label="Room count"
-                                type="number"
-                                variant="outlined"
-                                value={rooms.toString()}
-                                onChange={event => setRooms(parseInt(event.target.value))}
-                            />
-                        </RealEstateFormControl>
-                    </Step>}
-                </Grid>
+                    <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
+                        {place && <Step icon={<FormatLineSpacingIcon />} title={"Flat properties"} complete={floor && area && rooms}>
+                            <RealEstateFormControl variant='outlined'>
+                                <TextField
+                                    className={classes.textField}
+                                    label="Floor"
+                                    type="number"
+                                    variant="outlined"
+                                    value={floor.toString()}
+                                    onChange={event => setFloor(parseInt(event.target.value))}
+                                />
+                            </RealEstateFormControl>
+                            <RealEstateFormControl variant='outlined'>
+                                <TextField
+                                    className={classes.textField}
+                                    label="Area"
+                                    type="number"
+                                    variant="outlined"
+                                    value={area.toString()}
+                                    onChange={event => setArea(parseInt(event.target.value))}
+                                />
+                            </RealEstateFormControl>
+                            <RealEstateFormControl variant='outlined'>
+                                <TextField
+                                    className={classes.textField}
+                                    label="Room count"
+                                    type="number"
+                                    variant="outlined"
+                                    value={rooms.toString()}
+                                    onChange={event => setRooms(parseInt(event.target.value))}
+                                />
+                            </RealEstateFormControl>
+                        </Step>}
+                    </Grid>
 
-                <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
-                    <Step icon={<EuroSharpIcon />} title={"Prediction"} hideCompleteIcon>
-                        {loading && <CircularProgress />}
-                        {predictions && <div className={classes.predictions}>
-                            <div className={classes.prediction}>
-                                For sale:
-                                <h2 style={{margin: 3}}>{formatter.format(predictions[0][0])}</h2>
-                            </div>
-                            <div className={classes.prediction}>
-                                For rent:
-                                <h2 style={{margin: 3}}>{formatter.format(predictions[1][0])}</h2>
-                            </div>
-                        </div>}
-                    </Step>
+                    <Grid item xl={3} lg={3} md={4} sm={6} xs={12} spacing={3}>
+                        <Step icon={<EuroSharpIcon />} title={"Prediction"} hideCompleteIcon>
+                            {loading && <CircularProgress />}
+                            {predictions && <div className={classes.predictions}>
+                                <div className={classes.prediction}>
+                                    For sale:
+                                    <h2 style={{margin: 3}}>{formatter.format(predictions[0][0])}</h2>
+                                </div>
+                                <div className={classes.prediction}>
+                                    For rent:
+                                    <h2 style={{margin: 3}}>{formatter.format(predictions[1][0])}</h2>
+                                </div>
+                            </div>}
+                        </Step>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Container>
         </div>
     );
 }
