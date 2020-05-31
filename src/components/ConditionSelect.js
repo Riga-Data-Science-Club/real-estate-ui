@@ -5,10 +5,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const OPERATIONS = [
-    {label: 'Pārdošana', value: 'For Rent'},
-    {label: 'Izīrēšana', value: 'For Sale'},
-]
+const CONDITION_TYPES = [
+    {label: 'Visas ērtības', value: 'All, amenities'},
+    {label: 'Daļējās ērtības', value: 'Partial, amenities'},
+    {label: 'Bez ērtībām', value: 'Without, amenities'},
+];
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -20,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function OperationSelect({value, onChange}) {
+export function ConditionSelect({value, onChange}) {
     const classes = useStyles();
     return (
-        <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel>Operation</InputLabel>
+        <FormControl variant='outlined' className={classes.formControl}>
+            <InputLabel>Condition</InputLabel>
             <Select
                 value={value}
                 onChange={onChange}
-                label="Operation"
+                label='Condition'
             >
-                {OPERATIONS.map(o => <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>)}
+                {CONDITION_TYPES.map(c => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
             </Select>
         </FormControl>
     );
