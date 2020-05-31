@@ -107,6 +107,7 @@ export default function Home() {
             setPredictions(null);
             fetch("https://api.rigadsclub.com/v1/models/riga:predict", {
                     method: "POST",
+                    mode: 'no-cors',
                     body: JSON.stringify({
                         instances: [
                             createInputInstance('For sale'),
